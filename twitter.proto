@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package my_twitter; 
+
+// Se definen los procedimientos remotos que el cliente puede invocar del servidor
+// Cada procedimiento remoto tiene un request(petición) y un reply (respuesta) que se definen posteriormente
+service Twitter {
+    rpc Registrar(RegistrarRequest) returns (RegistrarReply);
+    rpc Login(LoginRequest) returns (LoginReply);
+    rpc Logout(LogoutRequest) returns (Void);
+    rpc VerUsuarios(VerUsuariosRequest) returns (VerUsuariosReply);
+    rpc Seguir(SeguirRequest) returns (SeguirReply);
+    rpc DejarSeguir(SeguirRequest) returns (SeguirReply);
+    rpc VerSeguidos(VerSeguidosRequest) returns (VerSeguidosReply);
+    rpc EnviarTuit(EnviarTuitRequest) returns (Void);
+    rpc RecibirTuits(RecibirTuitsRequest) returns (RecibirTuitsReply);
+}
+
+// *** MENSAJES ORGANIZADOS POR PROCEDIMIENTOS REMOTOS ***
+
+// Registrar
+message RegistrarRequest {
+    string user = 1;
+    string password = 2;
+}
+message RegistrarReply {
+    int32 error = 1; // 0 para éxito, 1 usuario ya existe
+}
+
+// Login
+message LoginRequest {
+    string user = 1;
+    string password = 2;
+}
+message LoginReply {
+    int32 error = 1; // 0 para éxito, 1 user incorrecto, 2 password incorrecto
+    int32 session = 2; // ID de la sesión
+}
+
+// Logout
+message LogoutRequest {
+    string user = 1;
+    int32 session = 2;
+}
+
+// VerUsuarios
+message VerUsuariosRequest {
+    string user = 1;
+    int32 session = 2;
+}
+message VerUsuariosReply {
+    repeated string user = 1; //Lista de usuarios registrados (modificador repeated)
+}
+
+// Seguir
+message SeguirRequest {
+    string user = 1;
+    int32 session = 2;
+    string user_to_follow = 3;
+}
+message SeguirReply {
+    int32 error = 1; // 0 para éxito, 1 usuario no existe, 2 ya sigue a ese usuario
+}
+
+// DejarSeguir
+message DejarSeguirRequest {
+    string user = 1;
+    int32 session = 2;
+    string user_to_unfollow = 3;
+}
+message DejarSeguirReply {
+    int32 error = 1; // 0 para éxito, 1 usuario no existe, 2 no sigue a ese usuario
+}
+
+// VerSeguidos
+message VerSeguidosRequest {
+    string user = 1;
+    int32 session = 2;
+}
+message VerSeguidosReply {
+    repeated string user = 1; //Lista de usuarios seguidos (modificador repeated)
+}
+
+// EnviarTuit
+message EnviarTuitRequest {
+    string user = 1;
+    int32 session = 2;
+    Tuit tuit = 3;
+}
+
+// RecibirTuits
+message RecibirTuitsRequest {
+    string user = 1;
+    int32 session = 2;
+}
+message RecibirTuitsReply {
+    repeated Tuit tuit = 1; //Lista de Tuits. Cada Tuit tiene un nombre de usuario y un mensaje.
+}
+
+// *** MENSAJES GENERALES ***
+message Tuit {
+    string user = 1;
+    string mensaje = 2;
+}
+message Void {} // Mensaje vacío
