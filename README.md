@@ -1,6 +1,6 @@
-# Pyther
+# Pyter
 
-Pyther is a small client-server messaging program that uses gRPC.
+Pyter is a small client-server messaging program that uses gRPC.
 
 ## Overview
 
