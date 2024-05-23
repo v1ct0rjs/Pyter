@@ -28,6 +28,7 @@ The project is structured into several Python files, each serving a specific pur
 To run the project, you need to have Python and pip installed. You can then install the required dependencies and run the server and client scripts.
 
 
+[Pyter running](pyter.gif)
 
 
 
